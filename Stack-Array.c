@@ -30,7 +30,7 @@ void pop()
     top--;
 }
 
-void display()
+void traversal()
 {
     if (top == -1)
     {
@@ -45,6 +45,26 @@ void display()
     }
 }
 
+int isEmpty()
+{
+    return top == -1;
+}
+
+int isFull()
+{
+    return top == MAX_SIZE - 1;
+}
+
+int getTop()
+{
+    if (top == -1)
+    {
+        printf("\n\t\t Stack is empty");
+        return -1; // You might want to choose a suitable value for an empty stack
+    }
+    return stack[top];
+}
+
 int main()
 {
     int x, ch;
@@ -52,8 +72,11 @@ int main()
     printf("\n\t-------------------------------\n");
     printf("\n\t\t Push -> 1");
     printf("\n\t\t Pop  -> 2");
-    printf("\n\t\t Display -> 3");
-    printf("\n\t\t Exit -> 4");
+    printf("\n\t\t Traversal -> 3");
+    printf("\n\t\t Is Empty -> 4");
+    printf("\n\t\t Is Full  -> 5");
+    printf("\n\t\t Get Top  -> 6");
+    printf("\n\t\t Exit -> 7");
     printf("\n\t-------------------------------\n");
     while (1)
     {
@@ -70,9 +93,18 @@ int main()
             pop();
             break;
         case 3:
-            display();
+            traversal();
             break;
         case 4:
+            printf("\n\t\t Is Empty: %s", isEmpty() ? "Yes" : "No");
+            break;
+        case 5:
+            printf("\n\t\t Is Full: %s", isFull() ? "Yes" : "No");
+            break;
+        case 6:
+            printf("\n\t\t Top element: %d", getTop());
+            break;
+        case 7:
             return 0;
         default:
             printf("\n\t\t Invalid choice --\n");
