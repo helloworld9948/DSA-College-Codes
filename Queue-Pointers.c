@@ -67,6 +67,37 @@ void display()
     }
 }
 
+int isEmpty()
+{
+    return front == NULL;
+}
+
+int isFull()
+{
+
+    return 0;
+}
+
+int getFront()
+{
+    if (front == NULL)
+    {
+        printf("\n\t\t Queue is empty");
+        return -1; 
+    }
+    return front->data;
+}
+
+int getRear()
+{
+    if (rear == NULL)
+    {
+        printf("\n\t\t Queue is empty");
+        return -1; 
+    }
+    return rear->data;
+}
+
 int main()
 {
     int x, ch;
@@ -75,7 +106,11 @@ int main()
     printf("\n\t\t Enqueue -> 1");
     printf("\n\t\t Dequeue  -> 2");
     printf("\n\t\t Display -> 3");
-    printf("\n\t\t Exit -> 4");
+    printf("\n\t\t Is Empty -> 4");
+    printf("\n\t\t Is Full  -> 5");
+    printf("\n\t\t Front Element -> 6");
+    printf("\n\t\t Rear Element -> 7");
+    printf("\n\t\t Exit -> 8");
     printf("\n\t-------------------------------\n");
     while (1)
     {
@@ -95,6 +130,18 @@ int main()
             display();
             break;
         case 4:
+            printf("\n\t\t Is Empty: %s", isEmpty() ? "Yes" : "No");
+            break;
+        case 5:
+            printf("\n\t\t Is Full: %s", isFull() ? "Yes" : "No");
+            break;
+        case 6:
+            printf("\n\t\t Front Element: %d", getFront());
+            break;
+        case 7:
+            printf("\n\t\t Rear Element: %d", getRear());
+            break;
+        case 8:
             return 0;
         default:
             printf("\n\t\t Invalid choice --\n");
