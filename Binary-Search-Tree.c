@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 struct Node {
     int data;
@@ -27,15 +26,7 @@ struct Node* insert(struct Node* root, int value) {
     return root;
 }
 
-void inOrderRecursive(struct Node* root) {
-    if (root != NULL) {
-        inOrderRecursive(root->left);
-        printf("%d ", root->data);
-        inOrderRecursive(root->right);
-    }
-}
-
-void inOrderNonRecursive(struct Node* root) {
+void inOrder(struct Node* root) {
     struct Node* stack[100];
     int top = -1;
     struct Node* current = root;
@@ -53,15 +44,7 @@ void inOrderNonRecursive(struct Node* root) {
     }
 }
 
-void preOrderRecursive(struct Node* root) {
-    if (root != NULL) {
-        printf("%d ", root->data);
-        preOrderRecursive(root->left);
-        preOrderRecursive(root->right);
-    }
-}
-
-void preOrderNonRecursive(struct Node* root) {
+void preOrder(struct Node* root) {
     if (root == NULL)
         return;
 
@@ -80,15 +63,7 @@ void preOrderNonRecursive(struct Node* root) {
     }
 }
 
-void postOrderRecursive(struct Node* root) {
-    if (root != NULL) {
-        postOrderRecursive(root->left);
-        postOrderRecursive(root->right);
-        printf("%d ", root->data);
-    }
-}
-
-void postOrderNonRecursive(struct Node* root) {
+void postOrder(struct Node* root) {
     if (root == NULL)
         return;
 
@@ -113,77 +88,116 @@ void postOrderNonRecursive(struct Node* root) {
     }
 }
 
+struct Node* search(struct Node* root, int key) {
+    while (root != NULL && root->data != key) {
+        if (key < root->data)
+            root = root->left;
+        else
+            root = root->right;
+    }
+    return root;
+}
+
+struct Node* minValueNode(struct Node* node) {
+    while (node && node->left != NULL)
+        node = node->left;
+    return node;
+}
+
+struct Node* deleteNode(struct Node* root, int key) {
+    if (root == NULL)
+        return root;
+
+    if (key < root->data)
+        root->left = deleteNode(root->left, key);
+    else if (key > root->data)
+        root->right = deleteNode(root->right, key);
+    else {
+        if (root->left == NULL) {
+            struct Node* temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            struct Node* temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        struct Node* temp = minValueNode(root->right);
+
+        root->data = temp->data;
+
+        root->right = deleteNode(root->right, temp->data);
+    }
+
+    return root;
+}
+
 int main() {
     struct Node* root = NULL;
-    int choice, value;
-	        printf("\n1. Insert\n");
-        printf("2. In-order Recursive Traversal\n");
-        printf("3. In-order Non-Recursive Traversal\n");
-        printf("4. Pre-order Recursive Traversal\n");
-        printf("5. Pre-order Non-Recursive Traversal\n");
-        printf("6. Post-order Recursive Traversal\n");
-        printf("7. Post-order Non-Recursive Traversal\n");
-        printf("8. Exit\n");
+    int choice, value, key;
+
+    printf("Binary Search Tree Operations\n");
+    printf("1. Insert\n");
+    printf("2. In-order Traversal\n");
+    printf("3. Pre-order Traversal\n");
+    printf("4. Post-order Traversal\n");
+    printf("5. Search\n");
+    printf("6. Delete\n");
+    printf("7. Exit\n");
+
     while (1) {
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-            	printf("\n");
                 printf("Enter value to insert: ");
                 scanf("%d", &value);
                 root = insert(root, value);
                 break;
 
             case 2:
-                printf("\n");
-                printf("In-order Recursive Traversal: ");
-                inOrderRecursive(root);
+                printf("In-order Traversal: ");
+                inOrder(root);
                 printf("\n");
                 break;
 
             case 3:
-               printf("\n");
-                printf("In-order Non-Recursive Traversal: ");
-                inOrderNonRecursive(root);
+                printf("Pre-order Traversal: ");
+                preOrder(root);
                 printf("\n");
                 break;
 
             case 4:
-            	printf("\n");
-                printf("Pre-order Recursive Traversal: ");
-                preOrderRecursive(root);
+                printf("Post-order Traversal: ");
+                postOrder(root);
                 printf("\n");
                 break;
 
             case 5:
-            	printf("\n");
-                printf("Pre-order Non-Recursive Traversal: ");
-                preOrderNonRecursive(root);
-                printf("\n");
+                printf("Enter key to search: ");
+                scanf("%d", &key);
+                if (search(root, key))
+                    printf("Key %d found in the tree.\n", key);
+                else
+                    printf("Key %d not found in the tree.\n", key);
                 break;
 
             case 6:
-            	printf("\n");
-                printf("Post-order Recursive Traversal: ");
-                postOrderRecursive(root);
-                printf("\n");
+                printf("Enter key to delete: ");
+                scanf("%d", &key);
+                root = deleteNode(root, key);
+                printf("Node with key %d deleted.\n", key);
                 break;
 
             case 7:
-            	printf("\n");
-                printf("Post-order Non-Recursive Traversal: ");
-                postOrderNonRecursive(root);
-                printf("\n");
-                break;
-
-            case 8:
                 exit(0);
 
             default:
                 printf("Invalid choice!\n");
         }
     }
+
     return 0;
 }
