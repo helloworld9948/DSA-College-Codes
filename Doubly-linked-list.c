@@ -1,156 +1,98 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
-{
-    int data;
+struct node {
     struct node *prev;
     struct node *next;
+    int data;
 };
 
 struct node *head = NULL;
 
-void append(int x)
-{
-    struct node *temp, *last;
-    temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL)
-    {
-        printf("\n\t\t Memory allocation failed");
+void create_insert(int x) {
+    struct node *ptr;
+    ptr = (struct node *)malloc(sizeof(struct node));
+
+    if (ptr == NULL) {
+        printf("\n \t Memory allocation failed");
         return;
     }
 
-    temp->data = x;
-    temp->next = NULL;
+    ptr->data = x;
+    ptr->prev = NULL;
 
-    if (head == NULL)
-    {
-        temp->prev = NULL;
-        head = temp;
-        return;
+    if (head == NULL) {
+        ptr->next = NULL;
+        head = ptr;
+    } else {
+        ptr->next = head;
+        head->prev = ptr;
+        head = ptr;
     }
 
-    last = head;
-    while (last->next != NULL)
-    {
-        last = last->next;
-    }
-
-    last->next = temp;
-    temp->prev = last;
+    printf("\n \t Node created and inserted: %d", x);
 }
 
-void prepend(int x)
-{
-    struct node *temp;
-    temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL)
-    {
-        printf("\n\t\t Memory allocation failed");
-        return;
-    }
+void deletion() {
+    struct node *ptr;
+    if (head == NULL) {
+        printf("\n\t Doubly linked list Underflow\n");
+    } else {
+        ptr = head;
+        printf("\n \t \t Deleted node: %d", ptr->data);
+        head = head->next;
 
-    temp->data = x;
-    temp->next = head;
-    temp->prev = NULL;
+        if (head != NULL) {
+            head->prev = NULL;
+        }
 
-    if (head != NULL)
-    {
-        head->prev = temp;
-    }
-
-    head = temp;
-}
-
-void delete (int x)
-{
-    struct node *temp;
-    if (head == NULL)
-    {
-        printf("\n\t\t List is empty");
-        return;
-    }
-
-    temp = head;
-    while (temp != NULL && temp->data != x)
-    {
-        temp = temp->next;
-    }
-
-    if (temp == NULL)
-    {
-        printf("\n\t\t Element not found");
-        return;
-    }
-
-    if (temp->prev != NULL)
-    {
-        temp->prev->next = temp->next;
-    }
-    else
-    {
-        head = temp->next;
-    }
-
-    if (temp->next != NULL)
-    {
-        temp->next->prev = temp->prev;
-    }
-
-    free(temp);
-}
-
-void display()
-{
-    struct node *current = head;
-    printf("\n\t\t List elements: ");
-    while (current != NULL)
-    {
-        printf("%d ", current->data);
-        current = current->next;
+        free(ptr);
     }
 }
 
-int main()
-{
-    int x, ch;
-    printf("\n\t Doubly Linked List operations");
-    printf("\n\t-------------------------------\n");
-    printf("\n\t\t Append -> 1");
-    printf("\n\t\t Prepend  -> 2");
-    printf("\n\t\t Delete -> 3");
-    printf("\n\t\t Display -> 4");
-    printf("\n\t\t Exit -> 5");
-    printf("\n\t-------------------------------\n");
-    while (1)
-    {
-        printf("\n\t\t Enter choice -> ");
+void traversals() {
+    struct node *ptr;
+    printf("\n \t Traversals: ");
+    ptr = head;
+    while (ptr != NULL) {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    }
+}
+
+int main() {
+    int ch, x;
+
+    printf("\n \t Doubly Linked List Operations\n");
+    printf("\n \t ------------------------------");
+    printf("\n \t Create & Insert --> 1");
+    printf("\n \t Deletion        --> 2");
+    printf("\n \t Traversal       --> 3");
+    printf("\n \t Exit            --> 4");
+    printf("\n \t -----------------------------\n");
+
+    while (1) {
+        printf("\n \t Enter your choice --> ");
         scanf("%d", &ch);
-        switch (ch)
-        {
-        case 1:
-            printf("\n\t\t Enter element to append: ");
-            scanf("%d", &x);
-            append(x);
-            break;
-        case 2:
-            printf("\n\t\t Enter element to prepend: ");
-            scanf("%d", &x);
-            prepend(x);
-            break;
-        case 3:
-            printf("\n\t\t Enter element to delete: ");
-            scanf("%d", &x);
-            delete (x);
-            break;
-        case 4:
-            display();
-            break;
-        case 5:
-            return 0;
-        default:
-            printf("\n\t\t Invalid choice --\n");
-            break;
+
+        switch (ch) {
+            case 1:
+                printf("\n \t Enter value to insert: ");
+                scanf("%d", &x);
+                create_insert(x);
+                break;
+            case 2:
+                deletion();
+                break;
+            case 3:
+                traversals();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("\t \t Invalid choice...");
         }
     }
+
+    return 0;
 }
