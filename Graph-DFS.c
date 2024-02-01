@@ -8,7 +8,7 @@ void DFS(int v) {
 
     for (i = 1; i <= n; i++) {
         if (a[v][i] == 1 && visited[i] == 0) {
-            printf("\n \t \t \t %d -> %d \n", v, i);
+            printf("\n \t \t \t %d -> %d \n \t \t \t", v, i);
             DFS(i);
         }
     }
