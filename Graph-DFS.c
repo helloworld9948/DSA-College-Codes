@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int n, a[10][10], visited[10];
-
+ 
 void DFS(int v) {
     int i;
     visited[v] = 1;
